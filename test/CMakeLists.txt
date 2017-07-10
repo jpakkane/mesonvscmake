@@ -75,9 +75,9 @@ add_executable(test_mfbuilder test_mfbuilder.cc)
 target_link_libraries(test_mfbuilder gtest mediascanner)
 add_test(test_mfbuilder test_mfbuilder)
 
-add_executable(test_dbus test_dbus.cc)
-target_link_libraries(test_dbus gtest mediascanner ms-dbus)
-add_test(test_dbus test_dbus)
+#add_executable(test_dbus test_dbus.cc)
+#target_link_libraries(test_dbus gtest mediascanner ms-dbus)
+#add_test(test_dbus test_dbus)
 
 add_executable(test_qml test_qml.cc)
 qt5_use_modules(test_qml QuickTest)

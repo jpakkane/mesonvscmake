@@ -31,8 +31,8 @@ pkg_check_modules(GLIB glib-2.0 REQUIRED)
 pkg_check_modules(PIXBUF gdk-pixbuf-2.0 REQUIRED)
 pkg_check_modules(EXIF libexif REQUIRED)
 pkg_check_modules(TAGLIB taglib REQUIRED)
-pkg_check_modules(DBUSCPP dbus-cpp REQUIRED)
-pkg_check_modules(APPARMOR libapparmor REQUIRED)
+#pkg_check_modules(DBUSCPP dbus-cpp REQUIRED)
+#pkg_check_modules(APPARMOR libapparmor REQUIRED)
 pkg_check_modules(UDISKS udisks2 REQUIRED)
 find_package(Threads REQUIRED)
 find_package(Qt5Core REQUIRED)
@@ -43,7 +43,7 @@ if(${full_warnings})
 # C does not have any more warning flags.
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weffc++")
 endif()
-find_package(CoverageReport)
+#find_package(CoverageReport)
 
 include(GNUInstallDirs)
 set(LIBDIR $CMAKE_INSTALL_LIBDIR)
@@ -52,8 +52,8 @@ enable_testing()
 add_subdirectory(src/mediascanner)
 add_subdirectory(src/extractor)
 add_subdirectory(src/daemon)
-add_subdirectory(src/ms-dbus)
-add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
+#add_subdirectory(src/ms-dbus)
+#add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
 add_subdirectory(src/utils)
 add_subdirectory(test)
 
@@ -82,33 +82,33 @@ install(
   DESTINATION ${CMAKE_INSTALL_DATADIR}/upstart/systemd-session/upstart
 )
 
-enable_coverage_report(
-  TARGETS
-    mediascanner
-    extractor-client
-    extractor-backend
-    mediascanner-extractor
-    scannerstuff
-    scannerdaemon
-    ms-dbus
-    mediascanner-dbus
-    mediascanner-qml
-    query
-    mountwatcher
-  FILTER
-    ${CMAKE_SOURCE_DIR}/tests/*
-    ${CMAKE_BINARY_DIR}/*
-  TESTS
-    basic
-    test_mediastore
-    test_metadataextractor
-    test_extractorbackend
-    test_sqliteutils
-    test_mfbuilder
-    test_subtreewatcher
-    test_volumemanager
-    test_dbus
-    test_qml
-    test_util
-)
+#enable_coverage_report(
+#  TARGETS
+#    mediascanner
+#    extractor-client
+#    extractor-backend
+#    mediascanner-extractor
+#    scannerstuff
+#    scannerdaemon
+#    ms-dbus
+#    mediascanner-dbus
+#    mediascanner-qml
+#    query
+#    mountwatcher
+#  FILTER
+#    ${CMAKE_SOURCE_DIR}/tests/*
+#    ${CMAKE_BINARY_DIR}/*
+#  TESTS
+#    basic
+#    test_mediastore
+#    test_metadataextractor
+#    test_extractorbackend
+#    test_sqliteutils
+#    test_mfbuilder
+#    test_subtreewatcher
+#    test_volumemanager
+#    test_dbus
+#    test_qml
+#    test_util
+#)
 
