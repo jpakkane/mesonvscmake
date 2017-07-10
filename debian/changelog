@@ -1,0 +1,632 @@
+mediascanner2 (0.112+17.04.20170322-0ubuntu1) zesty; urgency=medium
+
+  * Only run mediascanner in unity8.
+
+ -- Michael Terry <michael.terry@canonical.com>  Wed, 22 Mar 2017 15:23:21 +0000
+
+mediascanner2 (0.112+17.04.20170302-0ubuntu1) zesty; urgency=medium
+
+  * Compatibility with unversioned cmake-extras modules (LP: #1563573)
+  * Add SystemD session files
+
+ -- Pete Woods <pete.woods@canonical.com>  Thu, 02 Mar 2017 10:42:36 +0000
+
+mediascanner2 (0.112+17.04.20161201-0ubuntu1) zesty; urgency=medium
+
+  [ James Henstridge ]
+  * Correctly detect embedded art in Vorbis files with TagLib 1.11.
+
+  [ Michael Terry ]
+  * Handle running inside of a snap by respecting the $SNAP variable.
+    (LP: #1629009)
+
+ -- James Henstridge <james.henstridge@canonical.com>  Thu, 01 Dec 2016 09:07:15 +0000
+
+mediascanner2 (0.112+16.10.20160909-0ubuntu1) yakkety; urgency=medium
+
+  [ James Henstridge ]
+  * When multiple volumes are mounted in quick succession, scan them
+    serially to avoid reentrancy problems in the initial scan. (LP:
+    #1489656)
+  * Add apparmor-easyprof hardware directories to package so AppArmor
+    profile can compile when apparmor-easyprof-ubuntu isn't installed.
+    (LP: #1443693)
+  * Disable optimisation when compiling dbus-codec.cc to avoid gcc 6
+    compilation bug. (LP: #1621002)
+  * Replace deprecated use of GetConnectionAppArmorSecurityContext
+    method with GetConnectionCredentials. (LP: #1489489)
+
+  [ You-Sheng Yang ]
+  * Update mediascanner-extractor apparmor profile to cover Android
+    library locations on 64-bit systems.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Fri, 09 Sep 2016 13:46:43 +0000
+
+mediascanner2 (0.111+16.10.20160526-0ubuntu1) yakkety; urgency=medium
+
+  [ Alex Tu ]
+  * apparmor: extend read permissions to cover media_codecs*.xml to
+    support Turbo.
+
+  [ Robert Bruce Park ]
+  * Use new bileto_pre_release_hook.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Thu, 26 May 2016 06:02:56 +0000
+
+mediascanner2 (0.111+16.04.20160317-0ubuntu1) xenial; urgency=medium
+
+  * If a file is unscannable, insert a fallback MediaFile into the index
+    immediately, rather than relying on it being added by the
+    broken_files logic on next startup.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Thu, 17 Mar 2016 03:24:55 +0000
+
+mediascanner2 (0.111+16.04.20160225-0ubuntu1) xenial; urgency=medium
+
+  [ James Henstridge ]
+  * Batch index updates during the initial scan in 10 second intervals 
+    (the same rate as invalidation notifications go out).  This greatly 
+    reduces the IO overhead on initial startup, and is fairly safe now 
+    we have out of process metadata extraction.
+  * Don't emit the InvalidateResults signal if a file was opened for
+    writing and then closed, but not actually modified (LP: #1542175)
+  * Favour the EXIF DateTimeOriginal tag over DateTime when extracting
+    metadata from photos. (LP: #1468585)
+  * Use taglib to extract metadata from Vorbis, Opus, Flac, MP3 and MP4
+    audio files.  Other formats will fall back to the existing GStreamer
+    code path. (LP: #1536832)
+
+  [ CI Train Bot ]
+  * debian/libmediascanner-2.0-3.symbols: update to released version.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Thu, 25 Feb 2016 01:53:33 +0000
+
+mediascanner2 (0.110+16.04.20151216-0ubuntu1) xenial; urgency=medium
+
+  [ James Henstridge ]
+  * Fix up handling of directory renames, so old contents is correctly
+    removed from the index and inotify watches for subdirectories are
+    cleaned up. (LP: #1460411)
+  * If the mediascanner index can not be opened, catch the exception in
+    the QML plugin and act as if the database is empty.  A warning is
+    printed via Qt's logging framework.  This prevents QML apps using
+    mediascanner from terminating if there is a problem opening the
+    media index. (LP: #1514517)
+
+  [ CI Train Bot ]
+  * debian/libmediascanner-2.0-3.symbols: update to released version.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Wed, 16 Dec 2015 08:04:43 +0000
+
+mediascanner2 (0.109+16.04.20151124.1-0ubuntu1) xenial; urgency=medium
+
+  [ James Henstridge ]
+  * If a folder contains an image file named
+    {cover,album,albumart,.folder,folder}.{jpeg,jpg,png} use it as album
+    art for songs in preference to online art if the songs do not have
+    embedded art. (LP: #1372000)
+  * Disable MountWatcher's callback during destruction so we don't call
+    back into a partially destroyed class. (LP: #1492393)
+
+  [ CI Train Bot ]
+  * debian/libmediascanner-2.0-3.symbols: update to released version.
+  * New rebuild forced.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Tue, 24 Nov 2015 08:56:52 +0000
+
+mediascanner2 (0.108+16.04.20151109-0ubuntu1) xenial; urgency=medium
+
+  * Move the metadata extractor to a separate process to isolate bugs in
+    media codecs. (LP: #1508142)
+
+ -- James Henstridge <james.henstridge@canonical.com>  Mon, 09 Nov 2015 01:56:39 +0000
+
+mediascanner2 (0.108+16.04.20151102-0ubuntu1) xenial; urgency=medium
+
+  * Rename QML plugin package to qml-module-* and add transitional package
+    for upgrades. (LP: #1342031)
+  * Fix the metadata extractor so that it correctly extracts the date
+    and presence of cover art from MPEG 4 audio files. (LP: #1492407)
+  * Remove the id column from media_attic so that we don't get conflicts
+    when copying data between media and media_attic. (LP: #1501990)
+
+ -- James Henstridge <james.henstridge@canonical.com>  Mon, 02 Nov 2015 02:52:43 +0000
+
+mediascanner2 (0.107+15.10.20150922.1-0ubuntu1) wily; urgency=medium
+
+  [ James Henstridge ]
+  * Use a single source tree for the gcc 4.x/5.x builds.
+
+  [ CI Train Bot ]
+  * No-change rebuild.
+
+ -- James Henstridge <james.henstridge@canonical.com>  Tue, 22 Sep 2015 12:11:11 +0000
+
+mediascanner2 (0.106+15.10.20150917-0ubuntu1) wily; urgency=medium
+
+  [ James Henstridge ]
+  * Store the file modification time in the media database so we can 
+    find recently added media.
+  * Add a hasMedia() method to MediaStore, which returns true if there
+    is any media of the given type.
+
+  [ CI Train Bot ]
+  * debian/libmediascanner-2.0-3.symbols: update to released version.
+  * New rebuild forced.
+
+ -- Pawel Stolowski <ci-train-bot@canonical.com>  Thu, 17 Sep 2015 12:03:39 +0000
+
+mediascanner2 (0.105+15.10.20150721-0ubuntu2~ppa1) wily; urgency=medium
+
+  * Update symbols file for GCC 5.
+  * Tighten build dependency on libdbus-cpp-dev.
+
+ -- Matthias Klose <doko@ubuntu.com>  Tue, 21 Jul 2015 16:07:06 +0200
+
+mediascanner2 (0.105+15.10.20150721-0ubuntu1) wily; urgency=medium
+
+  [ James Henstridge ]
+  * Remove the hard dependency on g++-4.9. (LP: #1452332)
+
+ -- CI Train Bot <ci-train-bot@canonical.com>  Tue, 21 Jul 2015 05:13:08 +0000
+
+mediascanner2 (0.105+15.10.20150604-0ubuntu1) wily; urgency=medium
+
+  [ James Henstridge ]
+  * Treat invalid dates in MP3s as missing metadata. (LP: #1436110)
+
+ -- CI Train Bot <ci-train-bot@canonical.com>  Thu, 04 Jun 2015 06:51:43 +0000
+
+mediascanner2 (0.105+15.04.20150128-0ubuntu1) vivid; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Revert use of WAL log and instead try to rerun queries that fail
+    with SQLITE_BUSY. (LP: #1415318)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 28 Jan 2015 12:59:06 +0000
+
+mediascanner2 (0.105+15.04.20150127-0ubuntu1) vivid; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Send invalidations signals during scans that take a long time so the
+    dash gets updated. (LP: #1414566)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 27 Jan 2015 14:28:29 +0000
+
+mediascanner2 (0.105+15.04.20150122-0ubuntu1) vivid; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Add blacklist functionality and use it to block music playlists.
+    (LP: #1384295)
+  * Skip scanning of special directories if they point to user home dir.
+    (LP: #285998)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 22 Jan 2015 10:18:10 +0000
+
+mediascanner2 (0.105+15.04.20150121-0ubuntu1) vivid; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Extract metadata from images that don't have exif entries. (LP:
+    #1378880)
+  * Make Valgrind uninitialised jump warning go away.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 21 Jan 2015 15:21:18 +0000
+
+mediascanner2 (0.105+15.04.20141030.1-0ubuntu1) vivid; urgency=low
+
+  [ James Henstridge ]
+  * When a new directory is added and a new inotify watch is set up,
+    call fileAdded() on any regular files already in the directory so
+    they are not missed. (LP: #1379817)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 30 Oct 2014 11:23:12 +0000
+
+mediascanner2 (0.105+14.10.20141001-0ubuntu1) utopic; urgency=low
+
+  [ James Henstridge ]
+  * Use udisksd to track mounts and unmounts of removable media. (LP:
+    #1358750)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 01 Oct 2014 06:59:45 +0000
+
+mediascanner2 (0.105+14.10.20140925.1-0ubuntu1) utopic; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Print banner when starting the daemon so upstart logs are easier to
+    parse.
+  * Use fallback data for crasher files so they at least show up in
+    scope queries.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 25 Sep 2014 11:58:02 +0000
+
+mediascanner2 (0.105+14.10.20140909-0ubuntu1) utopic; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Print a log message when skipping a broken file.
+
+  [ Jamie Strandboge ]
+  * debian/usr.bin.mediascanner-service-2.0: add video abstraction.
+    silence access to /run/udev/data/** like we do elsewhere. allow read
+    on /dev/video*. allow read on /sys/devices/**/video4linux/**/uevent
+    .
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 09 Sep 2014 08:41:03 +0000
+
+mediascanner2 (0.105+14.10.20140903-0ubuntu1) utopic; urgency=medium
+
+  [ James Henstridge ]
+  * Record whether files contain embedded artwork in the media index.
+  * Use this info to generate art URIs that either use embedded artwork,
+    or the network based albumart provider.
+  * Expose embedded album art for Album objects too. Bump soname to
+    account for Album class changing size.
+
+  [ Ubuntu daily release ]
+  * debian/libmediascanner-2.0-3.symbols: auto-update to released
+    version
+  * New rebuild forced
+
+  [ Jussi Pakkanen ]
+  * Fix usage of blocking cache.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 03 Sep 2014 11:46:24 +0000
+
+mediascanner2 (0.104+14.10.20140825-0ubuntu1) utopic; urgency=medium
+
+  [ James Henstridge ]
+  * Add support for custom sort orders in query(), queryAlbums() and
+    queryArtists() methods.  This breaks the ABI, so bump soname.
+  * Update AppArmor policy to allow read access to
+    /sys/devices/**/video4linux/video** (LP: #1353139)
+
+  [ Ubuntu daily release ]
+  * debian/libmediascanner-2.0-2.symbols: auto-update to released
+    version
+
+  [ Jussi Pakkanen ]
+  * Fix inotify usage.
+  * Store information on files that break GStreamer and skip them when
+    encountered.
+  * Don't call closedir with a null argument.
+  * Add database integrity constraints.
+
+  [ Jamie Strandboge ]
+  * allow read access to /etc/udev/udev.conf for gstreamer (LP:
+    #1356883) (LP: #1356883)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 25 Aug 2014 12:52:17 +0000
+
+mediascanner2 (0.103+14.10.20140819-0ubuntu1) utopic; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Apparmor fix from jdstrand. (LP: #1357348)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 19 Aug 2014 12:52:52 +0000
+
+mediascanner2 (0.103+14.10.20140815.1-0ubuntu1) utopic; urgency=medium
+
+  [ Dimitri John Ledkov ]
+  * Add missing dependencies to libmediascanner-2.0-dev package. (LP: 
+    #1351358)
+
+  [ James Henstridge ]
+  * Automatically update models when the daemon sends the 
+    InvalidateResults D-Bus signal. Add a status property to models to 
+    let loading progress be tracked. Rename rowCount property to count, 
+    keeping the old name around for compatibility. (LP: #1347444)
+
+  [ Jussi Pakkanen ]
+  * Minor fixes for libc++.
+  * Handle the case when /media/username does not exist when 
+    Mediascanner first starts up. (LP: #1354543)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 15 Aug 2014 11:18:39 +0000
+
+mediascanner2 (0.102+14.10.20140805-0ubuntu1) utopic; urgency=low
+
+  [ James Henstridge ]
+  * Fix off by one error when appending new rows to QML models. (LP:
+    #1350529)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 05 Aug 2014 11:44:48 +0000
+
+mediascanner2 (0.102+14.10.20140730.1-0ubuntu1) utopic; urgency=medium
+
+  [ Jussi Pakkanen ]
+  * Added an autopkgtest.
+  * Fixes for various issues found by flint++.
+  * Install Filter.hh.
+  * Archive items on unmount.
+
+  [ James Henstridge ]
+  * Stream data to the QML models in chunks through a background
+    thread using QtConcurrent.
+    The limit option on the various models has been removed, since we
+    the individual queries are smaller.
+  * Add MediaStore::queryArtists() method, needed for the new scope
+    design.
+
+  [ Ubuntu daily release ]
+  * debian/libmediascanner-2.0-1.symbols: auto-update to released
+    version
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 30 Jul 2014 10:49:39 +0000
+
+mediascanner2 (0.101+14.10.20140724.1-0ubuntu1) utopic; urgency=medium
+
+  [ Alfonso Sanchez-Beato (email Canonical) ]
+  * Adjust apparmor configuration for MTK device 
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 24 Jul 2014 11:15:33 +0000
+
+mediascanner2 (0.101+14.10.20140721-0ubuntu1) utopic; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Specify GCC 4.9 explicitly to prevent ABI breakage.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 21 Jul 2014 14:16:51 +0000
+
+mediascanner2 (0.101+14.10.20140715-0ubuntu1) utopic; urgency=low
+
+  * New rebuild forced
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 15 Jul 2014 14:03:12 +0000
+
+mediascanner2 (0.101+14.10.20140702-0ubuntu1) utopic; urgency=low
+
+  [ James Henstridge ]
+  * Update the FTS tokenizer to work with SQLite 3.8.5, and reenable the
+    MediaStoreTest.query_short test. Bump libsqlite3-dev build
+    dependency to 3.8.5 too.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 02 Jul 2014 08:07:49 +0000
+
+mediascanner2 (0.101+14.10.20140627-0ubuntu3) utopic; urgency=medium
+
+  * apparmor: add missing proc file used by the mediatek soc
+
+ -- Ricardo Salveti de Araujo <ricardo.salveti@canonical.com>  Tue, 01 Jul 2014 11:29:31 +0800
+
+mediascanner2 (0.101+14.10.20140627-0ubuntu2) utopic; urgency=medium
+
+  * debian/usr.bin.mediascanner-service-2.0: couple more minor updates for
+    (mostly) noisy denials
+    - use consoles abstraction instead of just the pts interface since we need
+      /dev/tty when crashing
+    - finetune orcexec rules by allowing 'm' in /tmp but explicitly deny the
+      others
+    - allow non-owner read of @{PROC}/cmdline
+    - use attach_disconnected for /dev/socket/property_service
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Jun 2014 14:59:34 -0500
+
+mediascanner2 (0.101+14.10.20140627-0ubuntu1) utopic; urgency=medium
+
+  [ Jussi Pakkanen ]
+  * Disable short query test to work around a behavioral change in
+    SQLite.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 27 Jun 2014 17:30:35 +0000
+
+mediascanner2 (0.101+14.10.20140625-0ubuntu2) utopic; urgency=medium
+
+  * debian/usr.bin.mediascanner-service-2.0: updates for libhybris based on
+    work by Ricardo Salveti. (LP: #1334940)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 27 Jun 2014 08:00:22 -0500
+
+mediascanner2 (0.101+14.10.20140625-0ubuntu1) utopic; urgency=low
+
+  [ Ubuntu daily release ]
+  * debian/*symbols: auto-update new symbols to released version
+
+  [ James Henstridge ]
+  * Enable the QML plugin to pick between two MediaStore backends: the
+    direct disk backend and the D-Bus interface. The choice is made via
+    the MEDIASCANNER_USE_DBUS environment variable, and defaults to
+    direct access.
+
+  [ Jamie Strandboge ]
+  * * add AppArmor profile (LP: #1319065) - add
+    debian/usr.bin.mediascanner-service-2.0 - debian/control: Build-
+    Depends on dh-apparmor - debian/rules: update override_dh_installdeb
+    to use dh_apparmor - debian/mediascanner2.0.dirs: add etc/apparmor.d
+    - debian/mediascanner2.0.install: install profile in to place (LP:
+    #1319065)
+
+  [ CI bot ]
+  * * add AppArmor profile (LP: #1319065) - add
+    debian/usr.bin.mediascanner-service-2.0 - debian/control: Build-
+    Depends on dh-apparmor - debian/rules: update override_dh_installdeb
+    to use dh_apparmor - debian/mediascanner2.0.dirs: add etc/apparmor.d
+    - debian/mediascanner2.0.install: install profile in to place (LP:
+    #1319065)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 25 Jun 2014 16:28:53 +0000
+
+mediascanner2 (0.101+14.10.20140613-0ubuntu1) utopic; urgency=low
+
+  [ Ubuntu daily release ]
+  * debian/*symbols: auto-update new symbols to released version
+
+  [ James Henstridge ]
+  * Increase the timeout on D-Bus method calls. (LP: #1326753)
+  * Catch exceptions in the QML plugin, and print a warning instead. QML
+    applications terminate when C++ exceptions bubble up, which can not
+    be recovered from. (LP: #1326753)
+  * Add support for scanning photos using libexif. Adds libexif-dev as
+    new build dependency. (LP: #1256334)
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 13 Jun 2014 06:22:32 +0000
+
+mediascanner2 (0.101+14.10.20140530-0ubuntu1) utopic; urgency=low
+
+  [ James Henstridge ]
+  * Get rid of the direct constructor for MediaFile, forcing creation to 
+    go through MediaFileBuilder (which won't break when we add more 
+    metadata fields).
+    Also move MediaFile fields to a private struct to avoid breaking ABI 
+    in future when adding new metadata fields.
+  * Add a D-Bus service exposing the MediaStore, and move the QML binding 
+    over to using it.
+  * Limit access to the MediaScanner D-Bus interface from confined
+    processes.
+    The trust-store API does not exist yet, so it just hard codes support 
+    for the "com.ubuntu.music" application.
+  * Introduce a mediascanner::Filter type to hold search parameters for
+    the various MediaStore::list*() methods, and expand them to handle
+    genres. The new API also distinguishes between an unset filter and
+    a filter set to "". Make similar changes to the QML API, and add
+    notify signals to the rowCount properties.
+    (LP: #1319168, LP: #1319174).
+
+  [ Jussi Pakkanen ]
+  * Add support for .nomedia files to prevent chosen subtrees from being 
+    scanned. (LP: #1294303).
+  * Fix a few warnings emitted by clang.
+  * Guard against empty MediaFileBuilders.
+  * Fix CMake Project name.
+  * Prune those files that have a scan block file on their path when 
+    restoring.
+
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 30 May 2014 07:29:07 +0000
+
+mediascanner2 (0.100+14.10.20140508-0ubuntu1) utopic; urgency=low
+
+  [ James Henstridge ]
+  * Add genre and discNumber metadata fields to the media index, and
+    expose it in the QML binding. Add rowCount property and get(row,
+    role) method to each of the model classes in the QML binding. (LP:
+    #1246172)
+
+  [ Jussi Pakkanen ]
+  * Don't scan optical discs.
+  * Use generator for file traversal instead of a vector.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 08 May 2014 10:18:14 +0000
+
+mediascanner2 (0.100+14.04.20140403-0ubuntu1) trusty; urgency=low
+
+  [ James Henstridge ]
+  * Remove the Unity scope found in src/utils: it looks like it has
+    suffered from bit rot and has never been used (we have unity-scope-
+    mediascanner instead). This also removes an unnecessary dependency
+    on the old libunity.
+  * Before using GStreamer to extract metadata from a file, print a log
+    message. This is intended to help track problems with metadata
+    extraction.
+
+  [ Jussi Pakkanen ]
+  * Avoid assert crash by not trying to unregister subvolumes that were
+    skipped due to looking like root subdirs. (LP: #1294193)
+  * The output value of stat is undefined when the stat call fails. So
+    don't use it.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 03 Apr 2014 10:00:38 +0000
+
+mediascanner2 (0.100+14.04.20140324-0ubuntu1) trusty; urgency=low
+
+  [ James Henstridge ]
+  * Expose an "art" role/property on album and song models, returning a
+    URI that can be used with a QML Image component. The actual image
+    provider comes from ubuntu-ui-toolkit.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 24 Mar 2014 18:34:58 +0000
+
+mediascanner2 (0.100+14.04.20140314-0ubuntu1) trusty; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Keep going if inotify watch creation fails.
+  * Skip subdirectories that look like root directories.
+  * Delay signal handling initialisation.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 14 Mar 2014 15:17:16 +0000
+
+mediascanner2 (0.100+14.04.20140310-0ubuntu1) trusty; urgency=low
+
+  * New rebuild forced
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 10 Mar 2014 08:20:17 +0000
+
+mediascanner2 (0.100+14.04.20140307.1-0ubuntu1) trusty; urgency=low
+
+  [ James Henstridge ]
+  * First stages of a QML plugin for the Media Scanner. At present it 
+    only exposes the query() and lookup() interfaces.
+  * Relax the rules for tokenising the input when it ends with a short 
+    token followed '*' wildcard. This allows us to produce results for 
+    short strings when doing incremental searches.
+  * Convert the scanner daemon over to using the glib main loop rather 
+    than a hand rolled one, and limit invalidation signals to be sent at 
+    most once a second.
+
+  [ Jussi Pakkanen ]
+  * Add sqlite error string to exception.
+  * Shutdown cleanly on signals.
+  * Made SQLite db safe to access from multiple threads.
+
+  [ Michal Hruby ]
+  * Fix incorrect depends
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 07 Mar 2014 17:40:21 +0000
+
+mediascanner2 (0.99+14.04.20140220-0ubuntu1) trusty; urgency=low
+
+  [ James Henstridge ]
+  * Add a limit argument to MediaStore::queryAlbums(), and ensure that
+    it returns some results when given an empty query string.
+
+  [ Jussi Pakkanen ]
+  * Added const qualifiers to methods and made album immutable just like
+    mediafile.
+  * Use lstat to avoid loops.
+  * Fix path where media cache is stored.
+  * Nil merge to get on the release train.
+  * Send invalidation signal once the db is fully populated.
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Thu, 20 Feb 2014 10:03:04 +0000
+
+mediascanner2 (0.99+14.04.20140205-0ubuntu1) trusty; urgency=low
+
+  [ James Henstridge ]
+  * Add a limit argument to MediaStore::query(), and ensure that it
+    produces some results in response to an empty query.
+
+  [ Jussi Pakkanen ]
+  * Simple class for sending result set invalidation messages.
+  * Add a mediascanner namespace.
+  * Simpler header reorg.
+
+  [ CI bot ]
+  * Null merge to get changes through CITrain
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 05 Feb 2014 18:08:14 +0000
+
+mediascanner2 (0.99+14.04.20140117-0ubuntu1) trusty; urgency=low
+
+  [ James Henstridge ]
+  * Fix a few issues that prevent the scanner daemon from running when
+    stdin is redirected to /dev/null.
+  * Fix the licensing on the public library so that it is correctly
+    labelled as LGPL, like the old mediascanner code base.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 197
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 17 Jan 2014 07:50:53 +0000
+
+mediascanner2 (0.99+14.04.20140110-0ubuntu1) trusty; urgency=low
+
+  [ Jussi Pakkanen ]
+  * Hot new stuff
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Automatic snapshot from revision 191 (bootstrap)
+  * We no longer ship any LGPL sources. Also, fix packaging naming in
+    some places - along with Vcs-*
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 194
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Fri, 10 Jan 2014 14:18:01 +0000

@@ -1,0 +1,90 @@
+#include <tunables/global>
+
+/usr/bin/mediascanner-service-2.0 (attach_disconnected) {
+  #include <abstractions/base>
+  #include <abstractions/audio>
+  #include <abstractions/bash>
+  #include <abstractions/consoles>
+  #include <abstractions/dbus-session>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/nameservice>
+  #include <abstractions/private-files-strict>
+  #include <abstractions/user-tmp>
+
+  deny /dev/cpuctl/apps/tasks w,
+  deny /dev/cpuctl/apps/bg_non_interactive/tasks w,
+
+  @{PROC}/interrupts r,
+  @{PROC}/cmdline r,
+  owner @{PROC}/[0-9]*/auxv r,
+  owner @{PROC}/[0-9]*/fd/ r,
+  owner @{PROC}/[0-9]*/status r,
+  owner @{PROC}/[0-9]*/task/ r,
+  owner @{PROC}/[0-9]*/task/[0-9]*/ r,
+  owner @{PROC}/[0-9]*/cmdline r,
+
+  /etc/udev/udev.conf r,
+  deny /run/udev/data/** r,
+
+  ptrace (read) peer=@{profile_name},
+
+  # attach_disconnected path
+  /dev/socket/property_service rw,
+
+  # Android logging triggered by platform. Can safely deny
+  deny /dev/log_main w,
+  deny /dev/log_radio w,
+  deny /dev/log_events w,
+  deny /dev/log_system w,
+
+  /usr/bin/mediascanner-service-2.0 r,
+
+  # Allow read on all directories
+  /**/ r,
+
+  # Allow read on click install directories, removable media and files in
+  # /usr/local/share.
+  /usr/share/** r,
+  /usr/local/share/** r,
+  /{media,mnt,opt,srv}/** r,
+
+  # Allow reading any files in non-hidden directories
+  owner @{HOME}/[^.]*    rk,
+  owner @{HOME}/[^.]*/   rk,
+  owner @{HOME}/[^.]*/** rk,
+
+  # Allow reading files in XDG directories (ie, where apps are allowed to
+  # write)
+  owner @{HOME}/.config/user-dirs.dirs r,
+  owner @{HOME}/.cache/**       rk,
+  owner @{HOME}/.local/share/** rk,
+  owner /{,var/}run/user/[0-9]*/** rk,
+
+  # Write out the database files
+  owner @{HOME}/.cache/mediascanner-2.0/   rw,
+  owner @{HOME}/.cache/mediascanner-2.0/** rwkl,
+
+  # Allow communication with udisksd
+  dbus (send)
+       bus=system
+       path="/org/freedesktop/UDisks2*"
+       interface="org.freedesktop.DBus.ObjectManager"
+       member=GetManagedObjects,
+  dbus (send)
+       bus=system
+       path="/org/freedesktop/UDisks2*"
+       interface="org.freedesktop.DBus.Properties"
+       member={Get,GetAll},
+  dbus (receive)
+       bus=system
+       interface="org.freedesktop.DBus.ObjectManager",
+  dbus (receive)
+       bus=system
+       interface="org.freedesktop.DBus.Properties",
+  dbus (receive)
+       bus=system
+       interface="org.freedesktop.UDisks2*",
+
+  # Site-specific additions and overrides. See local/README for details.
+  #include <local/usr.bin.mediascanner-service-2.0>
+}

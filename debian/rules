@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+include /usr/share/dpkg/default.mk
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DPKG_GENSYMBOLS_CHECK_LEVEL=4
+
+# http://ccache.samba.org/manual.html#_precompiled_headers
+export CCACHE_SLOPPINESS=time_macros
+
+export QT_SELECT=qt5
+
+%:
+	dh $@ --parallel --fail-missing
+
+override_dh_auto_clean:
+	/bin/sh $(CURDIR)/debian/bileto_pre_release_hook
+	dh_auto_clean
+
+ifneq (,$(filter powerpc,$(DEB_HOST_ARCH)))
+  test_arg = || :
+else
+  test_arg =
+endif
+
+override_dh_auto_test:
+	dh_auto_test --max-parallel=1 -- ARGS="--verbose" $(test_arg)
+
+override_dh_installdeb:
+	dh_apparmor --profile-name=usr.bin.mediascanner-service-2.0 -pmediascanner2.0
+	dh_apparmor --profile-name=usr.lib.mediascanner-2.0.mediascanner-extractor -pmediascanner2.0
+	dh_installdeb

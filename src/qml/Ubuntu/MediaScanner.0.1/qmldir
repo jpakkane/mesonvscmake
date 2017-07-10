@@ -1,0 +1,3 @@
+module Ubuntu.MediaScanner
+plugin mediascanner-qml
+typeinfo plugin.qmltypes
