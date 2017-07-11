@@ -41,7 +41,7 @@ subdir('src/daemon')
 #add_subdirectory(src/ms-dbus)
 #add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
 subdir('src/utils')
-#subdir('test')
+subdir('test')
 
 # Install pkg-config file
 configure_file(input : 'mediascanner-2.0.pc.in',
