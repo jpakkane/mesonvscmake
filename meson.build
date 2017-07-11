@@ -38,9 +38,9 @@ ms_inc = include_directories('src')
 subdir('src/mediascanner')
 subdir('src/extractor')
 subdir('src/daemon')
-##add_subdirectory(src/ms-dbus)
-##add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
-#subdir('src/utils')
+#add_subdirectory(src/ms-dbus)
+#add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
+subdir('src/utils')
 #subdir('test')
 
 # Install pkg-config file
