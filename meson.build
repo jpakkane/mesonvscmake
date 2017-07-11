@@ -16,9 +16,10 @@ ms_dep = [dependency('gio-2.0'),
   dependency('gio-unix-2.0'),
   dependency('sqlite3', version: '>=3.8.5')
   ]
-  
+
 gst_dep = [dependency('gstreamer-1.0'), dependency('gstreamer-pbutils-1.0')]
 glib_dep = dependency('glib-2.0')
+gobject_dep = dependency('gobject-2.0')
 pixbuf_dep = dependency('gdk-pixbuf-2.0')
 exif_dep = dependency('libexif')
 taglib_dep = dependency('taglib')
@@ -28,15 +29,16 @@ udisks_dep = dependency('udisks2')
 thread_dep = dependency('threads')
 qtcore_dep = dependency('qt5', modules : 'Core')
 
+cdata = configuration_data()
+
+
 subdir('src/mediascanner')
-#subdir('src/extractor')
+subdir('src/extractor')
 #subdir('src/daemon')
 ##add_subdirectory(src/ms-dbus)
 ##add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
 #subdir('src/utils')
 #subdir('test')
-
-cdata = configuration_data()
 
 # Install pkg-config file
 configure_file(input : 'mediascanner-2.0.pc.in',
