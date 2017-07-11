@@ -28,7 +28,7 @@ udisks_dep = dependency('udisks2')
 thread_dep = dependency('threads')
 qtcore_dep = dependency('qt5', modules : 'Core')
 
-#subdir('src/mediascanner')
+subdir('src/mediascanner')
 #subdir('src/extractor')
 #subdir('src/daemon')
 ##add_subdirectory(src/ms-dbus)

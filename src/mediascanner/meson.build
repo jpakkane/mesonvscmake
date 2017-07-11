@@ -1,0 +1,17 @@
+mslib = shared_library('mediascanner',
+  'MediaFile.cc',
+  'MediaFileBuilder.cc',
+  'MediaFilePrivate.cc',
+  'Filter.cc',
+  'Album.cc',
+  'MediaStore.cc',
+  'MediaStoreBase.cc',
+  'FolderArtCache.cc',
+  'utils.cc',
+  'mozilla/fts3_porter.c',
+  'mozilla/Normalize.c',
+  dependencies : ms_dep,
+  version : '1.2.3',
+  soversion : '0',
+)
+
