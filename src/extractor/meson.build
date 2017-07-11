@@ -1,8 +1,6 @@
 # Build stubs/skeletons for D-Bus interface
 gnome = import('gnome')
 
-ms_inc = include_directories('..')
-
 gdb_src = gnome.gdbus_codegen('dbus-generated', 'dbus-interface.xml',
   interface_prefix : 'com.canonical.MediaScanner2',
   namespace : 'MS',

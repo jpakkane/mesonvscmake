@@ -31,10 +31,13 @@ qtcore_dep = dependency('qt5', modules : 'Core')
 
 cdata = configuration_data()
 
+ms_inc = include_directories('src')
+
+
 
 subdir('src/mediascanner')
 subdir('src/extractor')
-#subdir('src/daemon')
+subdir('src/daemon')
 ##add_subdirectory(src/ms-dbus)
 ##add_subdirectory(src/qml/Ubuntu/MediaScanner.0.1)
 #subdir('src/utils')
