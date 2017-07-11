@@ -52,39 +52,58 @@ ebe = executable('test_extractorbackend', 'test_extractorbackend.cc',
   )
 test('test_extractorbackend', ebe)
 
-#add_executable(test_metadataextractor test_metadataextractor.cc)
-#target_link_libraries(test_metadataextractor extractor-client gtest)
-#add_test(test_metadataextractor test_metadataextractor)
-## The gvfs modules interfere with the private D-Bus test fixtures
+mde = executable('test_metadataextractor',
+  'test_metadataextractor.cc',
+  include_directories : ms_inc,
+  link_with : [extr_lib, mslib, gtest_lib],
+  dependencies : [gst_dep, thread_dep]
+  )
+test('test_metadataextractor', mde)
+# The gvfs modules interfere with the private D-Bus test fixtures
 #set_tests_properties(test_metadataextractor PROPERTIES
 #  ENVIRONMENT "GIO_MODULE_DIR=${CMAKE_CURRENT_BINARY_DIR}/modules")
-#
-#add_executable(test_subtreewatcher test_subtreewatcher.cc)
-#target_link_libraries(test_subtreewatcher mediascanner scannerstuff gtest)
-#add_test(test_subtreewatcher test_subtreewatcher)
+
+st = executable('test_subtreewatcher', 'test_subtreewatcher.cc',
+  include_directories : ms_inc,
+  link_with : [mslib, scanner_lib, gtest_lib],
+  dependencies : [gst_dep, thread_dep]
+  )
+test('test_subtreewatcher', st)
 ## The gvfs modules interfere with the private D-Bus test fixtures
 #set_tests_properties(test_subtreewatcher PROPERTIES
 #  ENVIRONMENT "GIO_MODULE_DIR=${CMAKE_CURRENT_BINARY_DIR}/modules")
 #
-#add_executable(test_volumemanager test_volumemanager.cc)
+mv = executable('test_volumemanager',
+  'test_volumemanager.cc',
+  link_with : [mslib, scanner_lib, gtest_lib],
+  include_directories : ms_inc,
+  dependencies : [gst_dep, thread_dep],
+  )
 #target_link_libraries(test_volumemanager mediascanner scannerstuff gtest)
-#add_test(test_volumemanager test_volumemanager)
+test('test_volumemanager', mv)
 ## The gvfs modules interfere with the private D-Bus test fixtures
 #set_tests_properties(test_volumemanager PROPERTIES
 #  ENVIRONMENT "GIO_MODULE_DIR=${CMAKE_CURRENT_BINARY_DIR}/modules")
 #
-#add_executable(test_sqliteutils test_sqliteutils.cc)
-#target_link_libraries(test_sqliteutils gtest ${MEDIASCANNER_DEPS_LDFLAGS})
-#add_test(test_sqliteutils test_sqliteutils)
-#
-#add_executable(test_mfbuilder test_mfbuilder.cc)
-#target_link_libraries(test_mfbuilder gtest mediascanner)
-#add_test(test_mfbuilder test_mfbuilder)
-#
+sqlite = executable('test_sqliteutils',
+  'test_sqliteutils.cc',
+  include_directories : ms_inc,
+  link_with : [gtest_lib],
+  dependencies : [ms_dep, thread_dep],
+  )
+test('test_sqliteutils', sqlite)
+
+mfb = executable('test_mfbuilder', 'test_mfbuilder.cc',
+  include_directories : ms_inc,
+  link_with : [mslib, gtest_lib],
+  dependencies : [thread_dep],
+  )
+test('test_mfbuilder', mfb)
+
 ##add_executable(test_dbus test_dbus.cc)
 ##target_link_libraries(test_dbus gtest mediascanner ms-dbus)
 ##add_test(test_dbus test_dbus)
-#
+
 #add_executable(test_qml test_qml.cc)
 #qt5_use_modules(test_qml QuickTest)
 #target_link_libraries(test_qml mediascanner)
@@ -103,7 +122,11 @@ test('test_extractorbackend', ebe)
 #  ENVIRONMENT "QT_QPA_PLATFORM=minimal;MEDIASCANNER_CACHEDIR=${CMAKE_CURRENT_BINARY_DIR}/qml-nodb-cachedir;DBUS_SESSION_BUS_ADDRESS="
 #  TIMEOUT 600)
 #
-#
-#add_executable(test_util test_util.cc ../src/mediascanner/utils.cc)
-#target_link_libraries(test_util gtest ${GLIB_LDFLAGS})
-#add_test(test_util test_util)
+
+tutil = executable('test_util',
+  'test_util.cc',
+  '../src/mediascanner/utils.cc',
+  link_with : [gtest_lib],
+  dependencies : [glib_dep, thread_dep],
+  )
+test('test_util', tutil)

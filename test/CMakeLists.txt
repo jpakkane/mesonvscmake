@@ -79,23 +79,23 @@ add_test(test_mfbuilder test_mfbuilder)
 #target_link_libraries(test_dbus gtest mediascanner ms-dbus)
 #add_test(test_dbus test_dbus)
 
-add_executable(test_qml test_qml.cc)
-qt5_use_modules(test_qml QuickTest)
-target_link_libraries(test_qml mediascanner)
-add_test(test_qml test_qml -import ${CMAKE_BINARY_DIR}/src/qml)
-set_tests_properties(test_qml PROPERTIES
-  ENVIRONMENT "QT_QPA_PLATFORM=minimal"
-  TIMEOUT 600)
-
-add_test(test_qml_dbus test_qml -import ${CMAKE_BINARY_DIR}/src/qml)
-set_tests_properties(test_qml_dbus PROPERTIES
-  ENVIRONMENT "QT_QPA_PLATFORM=minimal;MEDIASCANNER_USE_DBUS=1"
-  TIMEOUT 600)
-
-add_test(test_qml_nodb qmltestrunner -import ${CMAKE_BINARY_DIR}/src/qml -input ${CMAKE_CURRENT_SOURCE_DIR}/test_qml_nodb.qml)
-set_tests_properties(test_qml_nodb PROPERTIES
-  ENVIRONMENT "QT_QPA_PLATFORM=minimal;MEDIASCANNER_CACHEDIR=${CMAKE_CURRENT_BINARY_DIR}/qml-nodb-cachedir;DBUS_SESSION_BUS_ADDRESS="
-  TIMEOUT 600)
+## add_executable(test_qml test_qml.cc)
+## qt5_use_modules(test_qml QuickTest)
+## target_link_libraries(test_qml mediascanner)
+## add_test(test_qml test_qml -import ${CMAKE_BINARY_DIR}/src/qml)
+## set_tests_properties(test_qml PROPERTIES
+##   ENVIRONMENT "QT_QPA_PLATFORM=minimal"
+##   TIMEOUT 600)
+## 
+## add_test(test_qml_dbus test_qml -import ${CMAKE_BINARY_DIR}/src/qml)
+## set_tests_properties(test_qml_dbus PROPERTIES
+##   ENVIRONMENT "QT_QPA_PLATFORM=minimal;MEDIASCANNER_USE_DBUS=1"
+##   TIMEOUT 600)
+## 
+## add_test(test_qml_nodb qmltestrunner -import ${CMAKE_BINARY_DIR}/src/qml -input ${CMAKE_CURRENT_SOURCE_DIR}/test_qml_nodb.qml)
+## set_tests_properties(test_qml_nodb PROPERTIES
+##   ENVIRONMENT "QT_QPA_PLATFORM=minimal;MEDIASCANNER_CACHEDIR=${CMAKE_CURRENT_BINARY_DIR}/qml-nodb-cachedir;DBUS_SESSION_BUS_ADDRESS="
+##   TIMEOUT 600)
 
 
 add_executable(test_util test_util.cc ../src/mediascanner/utils.cc)
